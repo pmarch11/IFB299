@@ -1,5 +1,21 @@
-<form action="/music_school/studentregistered/" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit" />
-</form>
+{% extends 'default.html' %}
+
+{% block content %}
+<h2>Student Registration Form</h2>
+	<form action="/music_school/studentregistered/" method="post">
+	    {% csrf_token %}
+	    {% for field in form %}
+	    	<p>
+	    		{{ field.label_tag }}<br>
+	    		{{ field }}
+	    		{% if field.help_text %}
+	    			<small style="color: grey">{{ field.help_text }}</small>
+	    		{% endif %}
+	    		{% for error in field.errors %}
+	    			<p style="color: red">{{ error }}</p>
+	    		{% endfor %}
+	    	</p>
+	    {% endfor %}
+	    <button type="submit">Register</button>
+	</form>
+{% endblock %}
