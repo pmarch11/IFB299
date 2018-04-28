@@ -1,7 +1,15 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.conf import settings	
 
 # Create your models here.
-class User(models.Model):
+class UserProfile(models.Model):
+	#extends Django user model
+	user = models.OneToOneField(settings.AUTH_USER_MODEL,related_name='profile',on_delete='cascade')
+	DOB = models.DateField("Date of Birth")
+	Phone_Number = models.PositiveIntegerField(max_length = 10)
+
+class OldUserModel(models.Model):
 	STUDENT = 'S'
 	TEACHER = 'T'
 	ADMIN = 'A'

@@ -2,5 +2,10 @@
 
 {% block content %}
   <h2>Welcome, {{ user.get_full_name }} <small>{{ user.username }}</small>!</h2>
+  <p>Your firstname: {{ user.first_name }}</p>
+  <p>Your lastname: {{ user.last_name }}</p>
   <p>Your email address: {{ user.email }}</p>
+  <p>Your DOB: {{ UserProfile.DOB }}</p>
+  <p>Your phone number: {{ UserProfile.Phone_Number }}</p>
+
 {% endblock %}

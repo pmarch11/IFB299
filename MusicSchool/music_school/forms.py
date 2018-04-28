@@ -2,12 +2,13 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-class StudentRegistrationForm(UserCreationForm):
-	First_Name = forms.CharField(label = 'First Name', max_length = 20)
-	Last_Name = forms.CharField(label = 'Last Name', max_length = 20)
+class StudentRegistrationForm(forms.Form, UserCreationForm):
+	username = forms.CharField(max_length=20)
+	first_name = forms.CharField(label = 'First Name', max_length = 20)
+	last_name = forms.CharField(label = 'Last Name', max_length = 20)
 	DOB = forms.DateField(label = 'Date of Birth')
 	Phone_Number = forms.IntegerField(label = 'Mobile Number')
-	Email_Address = forms.EmailField(label = 'Email Address')
+	email = forms.EmailField(label = 'Email Address')
 	# Qualifications = forms.CharField(label = 'Qualifications')
 	# Facebook_ID = forms.URLField(label = 'Facebook ID', max_length = 75)
 	# #TODO: change this to drop-down
@@ -19,6 +20,8 @@ class StudentRegistrationForm(UserCreationForm):
 	# Parent_Email = forms.EmailField(label = 'Parent Email')
 	# parent_phoneNum = forms.IntegerField(label = 'Parent phone number')
 
+
+
 	class Meta:
 		model = User
-		fields = ('username','First_Name','Last_Name','DOB','Phone_Number','Email_Address','password1','password2',)
+		fields = ('username','first_name','last_name','email','password1','password2',)
