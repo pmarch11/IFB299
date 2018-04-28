@@ -12,7 +12,7 @@ from .models import UserProfile
 def index(request):
 	return render(request,'index.html')
 
-def studentRegister(request):
+def student_register(request):
 	if request.method == 'POST':
 		form = StudentRegistrationForm(request.POST)
 		if form.is_valid():
@@ -29,5 +29,11 @@ def studentRegister(request):
 
 	return render(request, 'studentRegistration.html', {'form': form})
 
-def studentRegistered(request):
+def student_registered(request):
 	return HttpResponse("You're now a registered student!")
+
+def student_booking(request):
+	return render(request,'makebooking.html')
+
+def view_profile(request):
+	return render(request,'profile.html')

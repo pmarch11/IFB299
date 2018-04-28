@@ -1,0 +1,11 @@
+{% extends 'default.html' %}
+
+{% block content %}
+  <h2>Welcome, <small>{{ user.username }}</small>!</h2>
+  <p>Your username: {{user.username}}</p>
+  <p>Your first name: {{user.first_name}}</p>
+  <p>Your last name: {{user.last_name}}</p>
+  <p>Your email address: {{ user.email }}</p>
+  
+
+{% endblock %}
