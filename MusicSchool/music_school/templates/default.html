@@ -3,9 +3,26 @@
 <head>
 	<meta charset="utf-8">
 	<title>{% block title %}Music School{% endblock %}</title>
+	<!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 
 <body>
+	<nav>
+        <div class="nav-wrapper blue-grey darken-1">
+            <a href="#" class="brand-logo center white-text">Music School</a>
+            <ul id="nav-mobile" class="left hide-on-med-and-down">
+            </ul>
+        </div>
+    </nav>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+    
+    {% block javascript %} {% endblock javascript %}  
 	<header>
 		<h1>Music School Site</h1>
 		{% if user.is_authenticated %}
