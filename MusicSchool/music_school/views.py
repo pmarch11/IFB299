@@ -23,7 +23,9 @@ def student_register(request):
 			UserProfile.objects.create(user=user,DOB=date_of_birth,Phone_Number=mobile)
 			login(request,user)
 			#redirect to new URL
-			return redirect(index)
+			if(user is not None):
+				return redirect("home")
+
 	else:
 		form = StudentRegistrationForm()
 
