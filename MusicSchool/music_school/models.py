@@ -54,3 +54,46 @@ class OldUserModel(models.Model):
 		choices = STUDENT_TYPE_CHOICES,
 		default = NEW
 	)
+
+
+
+class bookingsModel(models.Model):
+
+	DURATION_CHOICES = (
+		(30, '30 Minutes'),
+		(60, '60 Minutes'),
+	)
+
+	REPEATS_CHOICES = (
+		(1, 'Weekly'),
+		(0.5, 'Fornightly'),
+		(2, 'Twice per Week'),
+		(3, 'Thrice per Week'),
+	)
+
+	LESSON_DAY_CHOICES = (
+		(1, 'Monday'),
+		(2, 'Tuesday'),
+		(3, 'Wednesday'),
+		(4, 'Thursday'),
+		(5, 'Friday'),
+	)
+
+	bookingID = models.AutoField(primary_key=True)
+	studentID = models.IntegerField() #needs to be changed to foreignkey
+	teacherID = models.IntegerField() #needs to be changed to foreignkey
+	startingDate = models.DateField()
+	startingTime = models.TimeField()
+	lessonDuration = models.IntegerField(choices=DURATION_CHOICES, default=30)
+	instrumentFocus = models.CharField(max_length = 30)
+	isRecurring = models.BooleanField(default=False)
+	#if recurring
+	lessonRepeat = models.CharField(choices=REPEATS_CHOICES, default=None, max_length=20)
+	secondaryLessonDay = models.CharField(choices=LESSON_DAY_CHOICES, default=None, max_length=20)
+	secondaryLessonTime = models.TimeField(default=None)
+	tertiaryLessonDay = models.CharField(choices=LESSON_DAY_CHOICES, default=None, max_length=20)
+	tertiaryLessonTime = models.TimeField(default=None)
+
+
+
+

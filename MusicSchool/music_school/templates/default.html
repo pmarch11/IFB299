@@ -19,6 +19,7 @@
 </head>
 
 <body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
 	<nav>
         <div class="nav-wrapper blue darken-4">
             <a href="{% url 'index' %}" class="brand-logo center white-text">Pinelands Music School</a>
@@ -66,10 +67,11 @@
     {% endblock javascript %}
 	<main>
 		{% block content %}
+		
 		{% endblock %}
 	</main>
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+	
 </body>
 
 <footer class="page-footer blue darken-2 white-text">

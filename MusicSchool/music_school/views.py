@@ -6,6 +6,7 @@ from django.http import HttpResponse
 
 from .forms import StudentRegistrationForm
 from .models import UserProfile
+from .models import bookingsModel
 
 # Create your views here.
 #@login_required
@@ -39,3 +40,20 @@ def student_booking(request):
 
 def view_profile(request):
 	return render(request,'profile.html')
+
+def create_booking(request):
+	if request.method == 'POST':
+		bookings = bookingsModel()
+		bookings.studentID = 1
+		bookings.teacherID = 1
+		bookings.startingDate = request.POST.get('dateSelect')
+		bookings.startingTime = request.POST.get('dateSelect')
+		bookings.lessonDuration = request.POST.get('dateSelect')
+		bookings.instrumentFocus = request.POST.get('dateSelect')
+		bookings.isRecurring = request.POST.get('dateSelect')
+		bookings.lessonRepeat = request.POST.get('dateSelect')
+		bookings.secondaryLessonDay = request.POST.get('dateSelect')
+		bookings.secondaryLessonTime = request.POST.get('dateSelect')
+		bookings.tertiaryLessonDay = request.POST.get('dateSelect')
+		bookings.tertiaryLessonTime = request.POST.get('dateSelect')
+

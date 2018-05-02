@@ -13,5 +13,4 @@ urlpatterns = [
 	url(r'^booking/$', views.student_booking, name='booking'),
 	url(r'^index/$', views.index, name='index'),
 	url(r'^profile/$', views.view_profile, name='profile'),
-	
 ]
