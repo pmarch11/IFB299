@@ -1,5 +1,4 @@
 {% extends 'default.html' %}
-{% csrf_token %}
 {% block content %}
 <br>
 <div class="container">
@@ -12,6 +11,7 @@
 
 	<div class="row">
 		<form class="booking" action="" method="post">
+		{% csrf_token %}
 		<div class="col s4">
 
 		<br><br>
@@ -108,6 +108,7 @@
 		
 
 		<form class="recurringBooking" action="" method="post">
+			{% csrf_token %}
 			<div id="recurringForm" style="display: none">
 			<br><br>
 				<div class="col s4 offset-s2">
