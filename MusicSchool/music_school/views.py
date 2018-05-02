@@ -41,19 +41,29 @@ def student_booking(request):
 def view_profile(request):
 	return render(request,'profile.html')
 
+def confirm_booking(request):
+	return render(request,'bookingconfirmation.html')
+
 def create_booking(request):
 	if request.method == 'POST':
 		bookings = bookingsModel()
 		bookings.studentID = 1
 		bookings.teacherID = 1
 		bookings.startingDate = request.POST.get('dateSelect')
-		bookings.startingTime = request.POST.get('dateSelect')
-		bookings.lessonDuration = request.POST.get('dateSelect')
-		bookings.instrumentFocus = request.POST.get('dateSelect')
-		bookings.isRecurring = request.POST.get('dateSelect')
-		bookings.lessonRepeat = request.POST.get('dateSelect')
-		bookings.secondaryLessonDay = request.POST.get('dateSelect')
-		bookings.secondaryLessonTime = request.POST.get('dateSelect')
-		bookings.tertiaryLessonDay = request.POST.get('dateSelect')
-		bookings.tertiaryLessonTime = request.POST.get('dateSelect')
+		bookings.startingTime = request.POST.get('timeSelect')
+		bookings.lessonDuration = request.POST.get('durationSelect')
+		bookings.instrumentFocus = request.POST.get('instrumentSelect')
+		bookings.isRecurring = request.POST.get('recurringBox')
+		bookings.lessonRepeat = request.POST.get('repeatedLessonSelect')
+		bookings.secondaryLessonDay = request.POST.get('secondDaySelect')
+		bookings.secondaryLessonTime = request.POST.get('secondTimeSelect')
+		bookings.tertiaryLessonDay = request.POST.get('thirdDaySelect')
+		bookings.tertiaryLessonTime = request.POST.get('thirdTimeSelect')
+
+		bookings.save()
+
+		return render(request, 'bookingconfirmation.html')
+
+	else:
+		return render(request, 'makebooking.html')
 

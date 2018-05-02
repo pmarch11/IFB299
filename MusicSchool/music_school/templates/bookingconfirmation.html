@@ -1,0 +1,20 @@
+{% extends 'default.html' %}
+{% block content %}
+<div class="container">
+<h2>Thank you for submitting a booking!</h2>
+
+<p>Starting Date:{{ booking.startingDate }}</p>
+<p>Starting Time:{{ booking.startingTime }}</p>
+<p>Lesson Duration:{{ booking.lessonDuration }}</p>
+<p>Instrument of Focus:{{ booking.instrumentFocus }}</p>
+<p>Recurring lesson?:{{ booking.isRecurring }}</p>
+<p>Repeat:{{ booking.lessonRepeat }}</p>
+<p>Second lesson day:{{ booking.secondaryLessonDay }}</p>
+<p>Second lesson time:{{ booking.secondaryLessonTime }}</p>
+<p>Third lesson day:{{ booking.tertiaryLessonDay }}</p>
+<p>Third lesson time:{{ booking.tertiaryLessonTime }}</p>
+
+</div>
+
+
+{% endblock %}

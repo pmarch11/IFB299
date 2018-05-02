@@ -94,6 +94,8 @@ class bookingsModel(models.Model):
 	tertiaryLessonDay = models.CharField(choices=LESSON_DAY_CHOICES, default=None, max_length=20)
 	tertiaryLessonTime = models.TimeField(default=None)
 
+	
+
 
 
 
