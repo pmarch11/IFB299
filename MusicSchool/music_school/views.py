@@ -25,7 +25,7 @@ def student_register(request):
 			login(request,user)
 			#redirect to new URL
 			if(user is not None):
-				return redirect("home")
+				return redirect("index")
 
 	else:
 		form = StudentRegistrationForm()
