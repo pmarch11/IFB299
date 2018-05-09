@@ -3,11 +3,13 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
 class StudentRegistrationForm(forms.Form, UserCreationForm):
+	fType = "register"
+
 	username = forms.CharField(max_length=20)
 	first_name = forms.CharField(label = 'First Name', max_length = 20)
 	last_name = forms.CharField(label = 'Last Name', max_length = 20)
-	DOB = forms.DateField(label = 'Date of Birth')
-	Phone_Number = forms.IntegerField(label = 'Mobile Number')
+	#dob = forms.DateField(label = 'Date of Birth')
+	phone_number = forms.IntegerField(label = 'Mobile Number')
 	email = forms.EmailField(label = 'Email Address')
 	# Qualifications = forms.CharField(label = 'Qualifications')
 	# Facebook_ID = forms.URLField(label = 'Facebook ID', max_length = 75)

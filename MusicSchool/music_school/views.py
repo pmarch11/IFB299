@@ -3,25 +3,51 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
+from django.views.generic import View
+from django.views.generic.edit import UpdateView
+from django.template import Context, loader
 
 from .forms import StudentRegistrationForm
-from .models import UserProfile
-from .models import bookingsModel
+from .models import UserProfile, bookingsModel
 
 # Create your views here.
-#@login_required
-def index(request):
-	return render(request,'index.html')
+class Index(View):
+	template_name = 'index.html'
+
+	def get(self,request):
+		return render(request,self.template_name)
+
+class ViewProfile(View):
+	model = UserProfile
+	template_name = 'profile.html'
+
+	def get(self,request):
+		number = request.user.profile.phone_number
+		#dob = request.user.profile.dob
+		return render(request,self.template_name, {'number': number,})
+
+class UpdateProfile(UpdateView):
+	model = UserProfile
+	fields = ['phone_number',]
+	template_name = 'update.html'
+	slug_field = 'phone_number'
+	slug_url_kwarg = 'slug'
+
+	def get(self,request,**kwargs):
+		return redirect("profile")
 
 def student_register(request):
 	if request.method == 'POST':
 		form = StudentRegistrationForm(request.POST)
 		if form.is_valid():
-			date_of_birth = form.cleaned_data.get('DOB')
-			mobile = form.cleaned_data.get('Phone_Number')
+			#create django user
 			user = form.save(commit = False)
 			user.save()
-			UserProfile.objects.create(user=user,DOB=date_of_birth,Phone_Number=mobile)
+			#create profile (django custom model)
+			newProfile = UserProfile.objects.get(user = user)
+			#newProfile.DOB = form.cleaned_data.get('dob')
+			newProfile.phone_number = form.cleaned_data.get('phone_number')
+			newProfile.save()
 			login(request,user)
 			#redirect to new URL
 			if(user is not None):
@@ -37,9 +63,6 @@ def student_registered(request):
 
 def student_booking(request):
 	return render(request,'makebooking.html')
-
-def view_profile(request):
-	return render(request,'profile.html')
 
 def confirm_booking(request):
 	return render(request,'bookingconfirmation.html')

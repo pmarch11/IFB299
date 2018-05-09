@@ -1,13 +1,37 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.conf import settings	
+from django.conf import settings
+from django.db.models.signals import post_save
 
 # Create your models here.
+
+#extends Django user model
 class UserProfile(models.Model):
-	#extends Django user model
-	user = models.OneToOneField(settings.AUTH_USER_MODEL,related_name='profile',on_delete='cascade')
-	DOB = models.DateField("Date of Birth")
-	Phone_Number = models.PositiveIntegerField(max_length = 10)
+	user = models.OneToOneField(
+		User,
+		on_delete='cascade',
+		related_name='profile'
+	)
+	#dob = models.DateField("Date of Birth")
+	phone_number = models.IntegerField(max_length = 10,default="0410000000")
+
+	def __str__(self):
+		return self.user.username
+
+def ProfileCreation(sender, **kwargs):
+	if kwargs['created']:
+		user_profile = UserProfile.objects.create(user = kwargs['instance'])
+post_save.connect(ProfileCreation, sender = User)
+
+# class TeacherProfile(models.Model):
+# 	user = models.OneToOneField(
+# 		User,
+# 		on_delete='cascade',
+# 		related_name='profile'
+# 	)
+	
+
+
 
 class OldUserModel(models.Model):
 	STUDENT = 'S'
