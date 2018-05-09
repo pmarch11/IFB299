@@ -37,9 +37,11 @@
 					<li id="index"><a href="{% url 'index' %}">home</a></li>
 					<li id="profile"><a href="{% url 'profile' %}">profile</a></li>
 					<li id="booking"><a href="{% url 'booking' %}">book a lesson</a></li>
+					<li id="apply for a teaching position"><a href="{% url 'apply' %}">apply for a teaching position</a></li>
 				{% else %}
 					<li id="login"><a href="{% url 'login' %}">login</a></li>
 					<li id="signup"><a href="{% url 'signup' %}">signup</a></li>
+					<li id="apply for a teaching position"><a href="{% url 'apply' %}">apply for a teaching position</a></li>
 				{% endif %}
 			</ul>
 			{% if user.is_authenticated %}

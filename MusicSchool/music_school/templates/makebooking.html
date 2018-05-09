@@ -1,4 +1,5 @@
 {% extends 'default.html' %}
+{% load widget_tweaks %}
 {% block content %}
 <br>
 <div class="container">
@@ -10,70 +11,28 @@
 
 
 	<div class="row">
-		<form class="booking" action="" method="post">
+		<form class="booking" id="booking" action="" method="post">
 		{% csrf_token %}
 		<div class="col s4">
 
 		<br><br>
-
-			<div class="input-field">
-				<select name="teacherSelect">
-					<option value="" disabled selected>Select a teacher</option>
-					<option value="1">Jane Doe</option>
-					<option value="2">Mika Jones</option>
-					<option value="3">Mike Lee</option>
-					<option value="4">Clint Stevens</option>
-				</select>
-				<label>Available teachers</label>
-				
-			</div>
-
-			<br><br>
-
-			<div id="calendar">
-				<label>Lesson Date</label>
-				<input type='text' value="Select a Date" class='datepicker' name="dateSelect">
-			</div>
-
 		
-			<br><br>
-			<div class="input-field">
-				<select name="timeSelect">
-					<option value="" disabled selected>Select a time</option>
-					<option value="1">10:30am</option>
-					<option value="2">11:00am</option>
-					<option value="3">12:00am</option>
-					<option value="4">1:00pm</option>
-					<option value="5">2:30pm</option>
-				</select>
-				<label>Available starting times</label>
-				
-			</div>
-			<br><br>
-			<div class="input-field">
-				<select name="durationSelect">
-					<option value="" disabled selected>Select an option</option>
-					<option value="1">30 Minutes</option>
-					<option value="2">60 Minutes</option>
-				</select>
-				<label>Lesson duration</label>
-				
-			</div>
 
-			<br><br>
+			{% for field in form %}
+		    	<p>
+		    		{{ field.label_tag }}<br>
+		    		{{ field }}
+		    		{% if field.help_text %}
+		    			<small style="color: grey">{{ field.help_text }}</small>
+		    		{% endif %}
+		    		{% for error in field.errors %}
+		    			<p style="color: red">{{ error }}</p>
+		    		{% endfor %}
+		    	</p>
+		    	<br>
+		    {% endfor %}
 
-			<div class="input-field">
-				<select name="instrumentSelect">
-					<option value="" disabled selected>Select an instrument</option>
-					<option value="1">Guitar</option>
-					<option value="2">Bass</option>
-					<option value="3">Violin</option>
-				</select>
-				<label>Instrument of focus</label>
-				
-			</div>
-
-			<br><br>
+		    <br>
 			<p>
 				<label>
 					<input id="recurring" name="recurringBox" type="checkbox" onchange="recurringChange()">
@@ -81,18 +40,10 @@
 				</label>
 			</p>
 
-			<br>
-
-			<div id="submitBtn">
-				<button class="btn waves-effect waves-light" value="Post" type="submit" name="action">Submit
-				<i class="material-icons right">send</i>
+		    <button id="register" class="btn waves-effect waves-light" type="submit">Submit<i class="material-icons right" onclick="submitForms()">send</i></button>
 			</div>
-		</div>
-		</form>
 
-		
-
-		<div id="bookingNotes">
+			<div id="bookingNotes">
 		<br><br><br><br><br><br><br><br>
 			<div class="col s6 offset-s2">
 				<div class="card blue-grey darken-1">
@@ -104,80 +55,27 @@
 			</div>
 		</div>
 
-
-		
-
-		<form class="recurringBooking" action="" method="post">
-		{% csrf_token %}
+		</form>
+		<form class="recurringBooking" id="recurringBooking" action="" method="post">
+			{% csrf_token %}
 			<div id="recurringForm" style="display: none">
 			<br><br>
 				<div class="col s4 offset-s2">
-					<div class="input-field">
-						<select name="repeatedLessonSelect">
-							<option value="" disabled selected>Select an option</option>
-							<option value="1">Weekly</option>
-							<option value="2">Fornightly</option>
-							<option value="3">Twice per week</option>
-							<option value="4">Three times per week</option>
-						</select>
-						<label>How often?</label>
-					</div>
 
-					<br><br>
+					{% for field in form2 %}
+		    	<p>
+		    		{{ field.label_tag }}<br>
+		    		{{ field }}
+		    		{% if field.help_text %}
+		    			<small style="color: grey">{{ field.help_text }}</small>
+		    		{% endif %}
+		    		{% for error in field.errors %}
+		    			<p style="color: red">{{ error }}</p>
+		    		{% endfor %}
+		    	</p>
+		    	<br>
+		    {% endfor %}
 
-					<div class="input-field">
-						<select name="secondDaySelect">
-							<option value="" disabled selected>Select an option</option>
-							<option value="1">Monday</option>
-							<option value="2">Tuesday</option>
-							<option value="3">Wednesday</option>
-							<option value="4">Thursday</option>
-							<option value="5">Friday</option>
-						</select>
-						<label>Secondary lesson day</label>
-					</div>
-
-					<br><br>
-
-					<div class="input-field">
-						<select name="secondTimeSelect">
-							<option value="" disabled selected>Select a time</option>
-							<option value="1">10:30am</option>
-							<option value="2">11:00am</option>
-							<option value="3">12:00am</option>
-							<option value="4">1:00pm</option>
-							<option value="5">2:30pm</option>
-						</select>
-						<label>Secondary lesson starting time</label>
-					</div>
-
-					<br><br>
-
-					<div class="input-field">
-						<select name="thirdDaySelect">
-							<option value="" disabled selected>Select an option</option>
-							<option value="1">Monday</option>
-							<option value="2">Tuesday</option>
-							<option value="3">Wednesday</option>
-							<option value="4">Thursday</option>
-							<option value="5">Friday</option>
-						</select>
-						<label>Tertiary lesson day</label>
-					</div>
-
-					<br><br>
-
-					<div class="input-field">
-						<select name="thirdTimeSelect">
-							<option value="" disabled selected>Select a time</option>
-							<option value="1">10:30am</option>
-							<option value="2">11:00am</option>
-							<option value="3">12:00am</option>
-							<option value="4">1:00pm</option>
-							<option value="5">2:30pm</option>
-						</select>
-						<label>Tertiary lesson starting time</label>
-					</div>
 				</div>
 			</div>
 		</form>
@@ -195,14 +93,8 @@
 {% block javascript %}
 <script>
 
-  var elem = document.querySelector('.datepicker');
-  var elem2 = document.querySelectorAll('select');
- 	M.Datepicker.init(elem,{
-  	format:'dd-mm-yy',
-  	disableWeekends: true,
-  	yearRange: 1,
-  });
-  var instance = M.FormSelect.init(elem2, {});
+  var elem = document.querySelectorAll('select');
+  var instance = M.FormSelect.init(elem, {});
 
   //function to handle checkbox change
   function recurringChange(){
@@ -213,6 +105,11 @@
 		document.getElementById("bookingNotes").style.display = "initial";
   		document.getElementById("recurringForm").style.display = "none";
   	}
+  }
+
+  function submitForms(){
+  	document.getElementById("booking").submit();
+  	document.getElementById("recurringBooking").submit();
   }
 
 </script>

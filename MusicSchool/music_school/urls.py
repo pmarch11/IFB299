@@ -11,5 +11,6 @@ urlpatterns = [
 	url(r'^index/$', views.Index.as_view(), name='index'),
 	url(r'^profile/$', views.ViewProfile.as_view(), name='profile'),
 	url(r'^update/(?P<slug>[\-\w]+)/$', views.UpdateProfile.as_view(), name='update'),
-	url(r'^confirm/$', views.confirm_booking, name='confirm')
+	url(r'^confirm/$', views.confirm_booking, name='confirm'),
+	url(r'^apply/$', views.form_upload, name='apply'),
 ]

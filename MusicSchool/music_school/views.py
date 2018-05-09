@@ -7,8 +7,8 @@ from django.views.generic import View
 from django.views.generic.edit import UpdateView
 from django.template import Context, loader
 
-from .forms import StudentRegistrationForm
-from .models import UserProfile, bookingsModel
+from .forms import StudentRegistrationForm, BookingsForm, BookingsFormRecurring, resumeForm
+from .models import UserProfile, bookingsModel, bookingsModelRecurring
 
 # Create your views here.
 class Index(View):
@@ -69,24 +69,24 @@ def confirm_booking(request):
 
 def create_booking(request):
 	if request.method == 'POST':
-		bookings = bookingsModel()
-		bookings.studentID = 1
-		bookings.teacherID = 1
-		bookings.startingDate = request.POST.get('dateSelect')
-		bookings.startingTime = request.POST.get('timeSelect')
-		bookings.lessonDuration = request.POST.get('durationSelect')
-		bookings.instrumentFocus = request.POST.get('instrumentSelect')
-		bookings.isRecurring = request.POST.get('recurringBox')
-		bookings.lessonRepeat = request.POST.get('repeatedLessonSelect')
-		bookings.secondaryLessonDay = request.POST.get('secondDaySelect')
-		bookings.secondaryLessonTime = request.POST.get('secondTimeSelect')
-		bookings.tertiaryLessonDay = request.POST.get('thirdDaySelect')
-		bookings.tertiaryLessonTime = request.POST.get('thirdTimeSelect')
-
-		bookings.save()
-
-		return render(request, 'bookingconfirmation.html')
-
+		form = BookingsForm(request.POST)
+		form2 = BookingsFormRecurring(request.POST)
+		if form.is_valid() and form2.is_valid():
+			booking = form.save()
+			bookingRecurring = form2.save()
+			return redirect("confirm")
 	else:
-		return render(request, 'makebooking.html')
+		form = BookingsForm()
+		form2 = BookingsFormRecurring()
 
+	return render(request, 'makebooking.html', { 'form': form, 'form2': form2})
+
+def form_upload(request):
+	if request.method == 'POST':
+		form = resumeForm(request.POST, request.FILES)
+		if form.is_valid():
+			form.save()
+			return HttpResponse("Thank you for your submission, we will contact you through email")
+	else:
+		form = resumeForm()
+	return render(request, 'resume_upload.html', { 'form': form})
