@@ -3,16 +3,16 @@
 <div class="container">
 <h2>Thank you for submitting a booking!</h2>
 
-<p>Starting Date:{{ booking.startingDate }}</p>
-<p>Starting Time:{{ booking.startingTime }}</p>
-<p>Lesson Duration:{{ booking.lessonDuration }}</p>
-<p>Instrument of Focus:{{ booking.instrumentFocus }}</p>
+<p>Teacher: {{ booking.teacherID }}
+<p>Starting Date: {{ booking.startingDate }}</p>
+<p>Starting Time: {{ booking.startingTime }}</p>
+<p>Lesson Duration: {{ booking.lessonDuration }} Minutes</p>
+<p>Instrument of Focus: {{ booking.instrumentFocus }}</p>
 
-<p>Repeat:{{ bookingRecurring.lessonRepeat }}</p>
-<p>Second lesson day:{{ bookingRecurring.secondaryLessonDay }}</p>
-<p>Second lesson time:{{ bookingRecurring.secondaryLessonTime }}</p>
-<p>Third lesson day:{{ bookingRecurring.tertiaryLessonDay }}</p>
-<p>Third lesson time:{{ bookingRecurring.tertiaryLessonTime }}</p>
+<p>Second lesson day: {{ bookingRecurring.secondaryLessonDay }}</p>
+<p>Second lesson time: {{ bookingRecurring.secondaryLessonTime }}</p>
+<p>Third lesson day: {{ bookingRecurring.tertiaryLessonDay }}</p>
+<p>Third lesson time: {{ bookingRecurring.tertiaryLessonTime }}</p>
 
 </div>
 

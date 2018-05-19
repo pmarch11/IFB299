@@ -81,10 +81,10 @@ class OldUserModel(models.Model):
 
 
 
-class bookingsModel(models.Model):
+class bookingModel(models.Model):
 
 	bookingID = models.AutoField(primary_key=True)
-	studentUsername = models.CharField(max_length = 20, default='default') #needs to be changed to foreignkey
+	studentUsername = models.CharField(max_length=30)
 	teacherID = models.IntegerField() #needs to be changed to foreignkey
 	startingDate = models.DateField()
 	startingTime = models.CharField(max_length = 10)
@@ -92,10 +92,10 @@ class bookingsModel(models.Model):
 	instrumentFocus = models.CharField(max_length = 30)
 	
 
-class bookingsModelRecurring(models.Model):
+class bookingModelRecurring(models.Model):
 	
 	recurringID = models.AutoField(primary_key=True)
-	bookingID = models.ForeignKey(bookingsModel, on_delete=models.CASCADE, blank=True, null=True) #needs to be changed to foreignkey
+	bookingID = models.ForeignKey(bookingModel, on_delete=models.CASCADE, blank=True, null=True) #needs to be changed to foreignkey
 	lessonRepeat = models.CharField(null=True, max_length=20)
 	secondaryLessonDay = models.CharField(null=True, max_length=20)
 	secondaryLessonTime = models.CharField(null=True, max_length=10)
@@ -107,5 +107,18 @@ class resumeModel(models.Model):
 	document = models.FileField(upload_to='documents/')
 	uploaded_at = models.DateTimeField(auto_now_add=True)
 
+#for available stock
+class instrumentStockModel(models.Model):
+	instrumentType = models.CharField(primary_key=True, max_length=30)
+	stock = models.IntegerField()
+	hire_cost = models.DecimalField(max_digits=6, decimal_places=2)
 
-	
+	def __str__(self):
+		return self.instrumentType
+
+#for student renting instrument
+class instrumentRequestModel(models.Model): 
+	requestID = models.AutoField(primary_key=True)
+	instrumentType = models.ForeignKey(instrumentStockModel, on_delete=models.CASCADE)
+	studentUsername = models.CharField(max_length=30)
+	return_date = models.DateField()

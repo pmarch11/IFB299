@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import bookingsModel, bookingsModelRecurring, resumeModel
+from .models import bookingModel, bookingModelRecurring, resumeModel, instrumentRequestModel, instrumentStockModel
 
 TimeCHOICES = (
 		('',''),
@@ -81,22 +81,22 @@ class StudentRegistrationForm(forms.Form, UserCreationForm):
 		fields = ('username','first_name','last_name','email','password1','password2',)
 
 
-class BookingsForm(forms.ModelForm):
+class BookingForm(forms.ModelForm):
 	studentUsername = 'test'
 	startingDate = forms.DateInput()
 	teacherID = forms.CharField(label = 'Select teacher', widget=forms.Select(choices=TeacherCHOICES))
 	startingTime = forms.CharField(label = 'Available starting times', widget=forms.Select(choices=TimeCHOICES))
-	lessonDuration = forms.CharField(label = 'For how long?', widget=forms.Select(choices=DURATION_CHOICES))
+	lessonDuration = forms.CharField(label = 'Lesson length', widget=forms.Select(choices=DURATION_CHOICES))
 	instrumentFocus = forms.CharField(label = 'Which instrument?', widget=forms.Select(choices=INSTRUMENTS_CHOICES))
 
 	class Meta:
-		model = bookingsModel
+		model = bookingModel
 		fields = ('teacherID', 'startingDate', 'startingTime', 'lessonDuration', 'instrumentFocus')
 		widgets = {
 			'startingDate': DateInput()
 		}
 
-class BookingsFormRecurring(forms.ModelForm):
+class BookingFormRecurring(forms.ModelForm):
 	lessonRepeat = forms.CharField(label = "How often?", widget=forms.Select(choices=REPEATS_CHOICES), required=False)
 	secondaryLessonDay = forms.CharField(label = "Secondary lesson day", widget=forms.Select(choices=LESSON_DAY_CHOICES), required=False)
 	secondaryLessonTime = forms.CharField(label = "Secondary lesson time", widget=forms.Select(choices=TimeCHOICES), required=False)
@@ -105,13 +105,28 @@ class BookingsFormRecurring(forms.ModelForm):
 
 
 	class Meta:
-		model = bookingsModelRecurring
+		model = bookingModelRecurring
 		fields = ('lessonRepeat', 'secondaryLessonDay', 'secondaryLessonTime', 'tertiaryLessonDay', 'tertiaryLessonTime')
 
 class resumeForm(forms.ModelForm):
 	notes = forms.CharField(widget=forms.Textarea(attrs={'width':"100%", 'cols' : "80", 'rows': "20",}))
 
-
 	class Meta:
 		model = resumeModel
 		fields = ('document', 'notes', )
+
+class instrumentForm(forms.ModelForm):
+	#instrumentType = forms.CharField(label = 'Which type of instrument?', widget=forms.Select(choices=INSTRUMENTS_CHOICES))
+	instrumentType = forms.ModelChoiceField(
+		label = "Type of instrument",
+		queryset=instrumentStockModel.objects.all(),
+		widget=forms.Select(attrs={'class': 'instrumentType'}),
+	)
+	return_date = forms.DateInput()
+
+	class Meta:
+		model = instrumentRequestModel
+		fields = ( 'instrumentType', 'return_date')
+		widgets = {
+			'return_date': DateInput()
+		}

@@ -1,14 +1,16 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect, render_to_response
 from django.http import HttpResponse
 from django.views.generic import View
 from django.views.generic.edit import UpdateView
 from django.template import Context, loader
+from django.contrib.auth.models import User
+from django.db.models import F
 
-from .forms import StudentRegistrationForm, BookingsForm, BookingsFormRecurring, resumeForm
-from .models import UserProfile, bookingsModel, bookingsModelRecurring
+from .forms import StudentRegistrationForm, BookingForm, BookingFormRecurring, resumeForm, instrumentForm
+from .models import UserProfile, bookingModel, bookingModelRecurring, instrumentStockModel
 
 # Create your views here.
 class Index(View):
@@ -61,25 +63,45 @@ def student_register(request):
 def student_registered(request):
 	return HttpResponse("You're now a registered student!")
 
-def student_booking(request):
-	return render(request,'makebooking.html')
-
 def confirm_booking(request):
-	return render(request,'bookingconfirmation.html')
+	template = 'bookingconfirmation.html'
+	context = {'booking': bookingModel.objects.order_by('bookingID')[0], 'bookingRecurring': bookingModelRecurring.objects.order_by('bookingID')[0]}
+	return render_to_response(template, context)
 
-def create_booking(request):
+
+def create_a_booking(request):
 	if request.method == 'POST':
-		form = BookingsForm(request.POST)
-		form2 = BookingsFormRecurring(request.POST)
+		form = BookingForm(request.POST)
+		form2 = BookingFormRecurring(request.POST)
 		if form.is_valid() and form2.is_valid():
 			booking = form.save()
+			booking.studentUsername = request.user.username
+			booking.save()
+
 			bookingRecurring = form2.save()
+			bookingRecurring.bookingID = bookingModel.objects.get(bookingID=booking.bookingID)
+			
+			bookingRecurring.save()
 			return redirect("confirm")
 	else:
-		form = BookingsForm()
-		form2 = BookingsFormRecurring()
+		form = BookingForm()
+		form2 = BookingFormRecurring()
 
-	return render(request, 'makebooking.html', { 'form': form, 'form2': form2})
+	return render(request, 'makeabooking.html', { 'form': form, 'form2': form2})
+
+#class view_booking(View):
+#	model = bookingModel #add bookingModelrecurring
+#	template_name = 'makeabooking.html'
+#
+#	def get(self,request):
+#		booking = request.booking
+#		return render(request,self.template_name, {'booking': booking,})
+
+#def view_booking(request):
+#	template = 'bookingconfirmation.html'
+#	context = {'booking': bookingModel.objects.get(instrumentType=) }
+
+
 
 def form_upload(request):
 	if request.method == 'POST':
@@ -90,3 +112,25 @@ def form_upload(request):
 	else:
 		form = resumeForm()
 	return render(request, 'resume_upload.html', { 'form': form})
+
+def instrument_request(request):
+	if request.method == 'POST':
+		form = instrumentForm(request.POST, request.FILES)
+		InstrumentStock = instrumentStockModel.objects.get(pk=form.data['instrumentType'])
+		if form.is_valid():
+			# if there is at least 1 selected instruent
+			if InstrumentStock.stock > 0:
+				#decrement stock
+				InstrumentStock.stock = F('stock') - 1
+				InstrumentStock.save()
+				#save form and tell user it was successful
+				instrumentRequest = form.save()
+				instrumentRequest.studentUsername = request.user.username
+				instrumentRequest.save()
+				return HttpResponse("Thank you for your rental, come to Mika's music school in person to collect your instrument")
+			else:
+				return HttpResponse("Instrument is currently out of stock")
+			
+	else:
+		form = instrumentForm()
+	return render(request, 'instrumentHire.html', { 'form': form})
