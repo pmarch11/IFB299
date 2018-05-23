@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
-from django.shortcuts import render,redirect, render_to_response
+from django.shortcuts import render,redirect, render_to_response,get_object_or_404
 from django.http import HttpResponse
 from django.views.generic import View
 from django.views.generic.edit import UpdateView
@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from django.db.models import F
 
 from .forms import StudentRegistrationForm, BookingForm, BookingFormRecurring, resumeForm, instrumentForm
-from .models import UserProfile, bookingModel, bookingModelRecurring, instrumentStockModel
+from .models import UserProfile, bookingModel, bookingModelRecurring, instrumentStockModel, TeacherProfile
 
 # Create your views here.
 class Index(View):
@@ -25,22 +25,43 @@ class ViewProfile(View):
 
 	def get(self,request):
 		number = request.user.profile.phone_number
+		file = request.user.profile.file
 		#dob = request.user.profile.dob
-		return render(request,self.template_name, {'number': number,})
+		return render(request,self.template_name, {'number': number, 'file': file})
+
+class ViewTProfile(View):
+	model = TeacherProfile
+	template_name = 'tprofile.html'
+
+	def get(self,request,teacher):
+		teacherUser = User.objects.filter(username = teacher)
+		for e in teacherUser:
+			print(e.username)
+		searchUser = get_object_or_404(User, username = teacher)
+		teacherInfo = TeacherProfile.objects.filter(user = searchUser)
+		return render(request,self.template_name, {'teacherUser': teacherUser, 'teacherInfo': teacherInfo})
+
 
 class UpdateProfile(UpdateView):
+	user = User
 	model = UserProfile
 	fields = ['phone_number',]
 	template_name = 'update.html'
-	slug_field = 'phone_number'
+	slug_field = 'user'
 	slug_url_kwarg = 'slug'
 
 	def get(self,request,**kwargs):
-		return redirect("profile")
+		self.object = UserProfile.objects.get(id=self.kwargs['id'])
+		context = self.get_context_data(object=self.object)
+		return render(request, 'template.html', {"phone_number": phone_number, "file": file})
+	
+	def get_object(self, queryset=None):
+		obj = UserProfile.objects.get(id=self.kwargs['id'])
+		return obj
 
 def student_register(request):
 	if request.method == 'POST':
-		form = StudentRegistrationForm(request.POST)
+		form = StudentRegistrationForm(request.POST, request.FILES)
 		if form.is_valid():
 			#create django user
 			user = form.save(commit = False)
@@ -54,7 +75,6 @@ def student_register(request):
 			#redirect to new URL
 			if(user is not None):
 				return redirect("index")
-
 	else:
 		form = StudentRegistrationForm()
 

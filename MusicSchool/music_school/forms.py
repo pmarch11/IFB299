@@ -63,6 +63,7 @@ class StudentRegistrationForm(forms.Form, UserCreationForm):
 	#dob = forms.DateField(label = 'Date of Birth')
 	phone_number = forms.IntegerField(label = 'Mobile Number')
 	email = forms.EmailField(label = 'Email Address')
+	file = forms.FileField(label = 'Profile Photo')
 	# Qualifications = forms.CharField(label = 'Qualifications')
 	# Facebook_ID = forms.URLField(label = 'Facebook ID', max_length = 75)
 	# #TODO: change this to drop-down
@@ -78,7 +79,7 @@ class StudentRegistrationForm(forms.Form, UserCreationForm):
 
 	class Meta:
 		model = User
-		fields = ('username','first_name','last_name','email','password1','password2',)
+		fields = ('username','first_name','last_name','email','password1','password2','file')
 
 
 class BookingForm(forms.ModelForm):

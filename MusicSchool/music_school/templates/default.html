@@ -30,14 +30,13 @@
 <body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
 	<nav>
-		<div class="nav-wrapper blue darken-4">
+		<div class="nav-wrapper teal accent-4">
 			<a href="{% url 'index' %}" class="brand-logo center white-text">Pinelands Music School</a>
 			<ul id="nav-mobile" class="left hide-on-med-and-down">
 				{% if user.is_authenticated %}
 					<li id="index"><a href="{% url 'index' %}">home</a></li>
 					<li id="profile"><a href="{% url 'profile' %}">profile</a></li>
 					<li id="booking"><a href="{% url 'booking' %}">book a lesson</a></li>
-					<li id="apply for a teaching position"><a href="{% url 'apply' %}">apply for a teaching position</a></li>
 					<li id="rent an instrument"><a href="{% url 'instrument' %}">rent an instrument</a></li>
 				{% else %}
 					<li id="login"><a href="{% url 'login' %}">login</a></li>
@@ -87,10 +86,10 @@
 	
 </body>
 
-<footer class="page-footer blue darken-2 white-text">
+<footer class="page-footer teal accent-4 white-text">
 	<div class="footer-copyright">
 		<div class="container">
-			My footer
+			®Pinelands Music School, 2018
 		</div>
 	</div>
 </footer>

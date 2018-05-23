@@ -1,0 +1,56 @@
+{% extends 'default.html' %}
+
+{% block content %}
+	<div class="container">
+		<h2></h2>
+		<div class="card">
+			<div class="row">
+				{% for entry in teacherInfo %}
+					<div class="col s6 card-image">
+						<img src="https://fthmb.tqn.com/LOrQn5DfLx6fcyTptYVD8SuCmuk=/768x0/filters:no_upscale():max_bytes(150000):strip_icc()/rulesforteachers-58605fbb3df78ce2c38044e5.jpg" />
+					</div>
+				{% endfor %}
+				<div class="card-stacked">
+					<ul class="col s6 collection">
+						{% for entry in teacherUser %}
+							<li class="collection-item"> <strong>First Name:</strong> {{ entry.first_name }}</li>
+							<li class="collection-item"> <strong>Last Name:</strong> {{ entry.last_name }}</li>
+							<li class="collection-item"> <strong>Contact Email:</strong> {{ entry.email }}</li>
+						{% endfor %}
+						{% for entry in teacherInfo %}
+							<li class="collection-item"> <strong>Contact Number:</strong> {{ entry.phone_number }}</li>
+							<li class="collection-item"> <strong>Languages spoken: </strong> {{ entry.language_skill }}</li>
+						{% endfor %}
+					</ul>
+				</div>
+				<div class="card-stacked">
+					<ul class="col s6 collection with-header">
+						{% for entry in teacherInfo %}
+							<li class="collection-header"><h4>My Instruments</h4></li>
+							<li class="collection-item">{{ entry.instrument_skill }}</li>
+						{% endfor %}
+					</ul>
+					<ul class="col s6 collection with-header">
+						{% for entry in teacherInfo %}
+							<li class="collection-header"><h4>My Qualifications</h4></li>
+							<li class="collection-item">{{ entry.qualifications }}</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="card col 12">
+			<div class="row">
+				<div class="card-content">
+				</div>
+			</div>
+			<div class="row">
+				<div class="card-content">
+					<div class="video-container">
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

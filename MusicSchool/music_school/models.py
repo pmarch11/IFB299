@@ -14,6 +14,8 @@ class UserProfile(models.Model):
 	)
 	#dob = models.DateField("Date of Birth")
 	phone_number = models.IntegerField(max_length = 10,default="0410000000")
+	file = models.FileField(upload_to='documents/')
+	uploaded_at = models.DateTimeField(auto_now_add=True)
 
 	def __str__(self):
 		return self.user.username
@@ -29,7 +31,21 @@ post_save.connect(ProfileCreation, sender = User)
 # 		on_delete='cascade',
 # 		related_name='profile'
 # 	)
-	
+
+class TeacherProfile(models.Model):
+	user = models.OneToOneField(
+		User,
+		on_delete='cascade',
+		related_name='Tprofile'
+	)
+	qualifications = models.TextField()
+	instrument_skill = models.TextField()
+	language_skill = models.TextField()
+	phone_number = models.IntegerField(max_length = 10,default="0410000000")
+	file = models.ImageField(upload_to='media/teacherphoto/')
+	uploaded_at = models.DateTimeField(auto_now_add=True)
+
+
 
 
 
