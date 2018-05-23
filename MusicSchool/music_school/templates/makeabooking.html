@@ -11,7 +11,7 @@
 
 
 	<div class="row">
-		<form class="booking" id="booking" action="" method="post">
+		<form class="booking" id="booking" method="post">
 		{% csrf_token %}
 		<div class="col s4">
 
@@ -31,15 +31,8 @@
 		    	<br>
 		    {% endfor %}
 
-		    <br>
-			<p>
-				<label>
-					<input id="recurring" name="recurringBox" type="checkbox" onchange="recurringChange()">
-					<span>Recurring lesson?</span>
-				</label>
-			</p>
 
-		    <button id="register" class="btn waves-effect waves-light" type="submit">Submit<i class="material-icons right" onclick="submitForms()">send</i></button>
+		    <button id="register" class="btn waves-effect waves-light" type="submit">Submit<i class="material-icons right">send</i></button>
 			</div>
 
 			<div id="bookingNotes">
@@ -54,29 +47,6 @@
 			</div>
 		</div>
 
-		</form>
-		<form class="recurringBooking" id="recurringBooking" action="" method="post">
-			{% csrf_token %}
-			<div id="recurringForm" style="display: none">
-			<br><br>
-				<div class="col s4 offset-s2">
-
-					{% for field in form2 %}
-		    	<p>
-		    		{{ field.label_tag }}<br>
-		    		{{ field }}
-		    		{% if field.help_text %}
-		    			<small style="color: grey">{{ field.help_text }}</small>
-		    		{% endif %}
-		    		{% for error in field.errors %}
-		    			<p style="color: red">{{ error }}</p>
-		    		{% endfor %}
-		    	</p>
-		    	<br>
-		    {% endfor %}
-
-				</div>
-			</div>
 		</form>
 	</div>
 </div>
@@ -94,22 +64,6 @@
 
   var elem = document.querySelectorAll('select');
   var instance = M.FormSelect.init(elem, {});
-
-  //function to handle checkbox change
-  function recurringChange(){
-  	if(document.getElementById("recurring").checked){ //showing secondary form for recurring lessons
-  		document.getElementById("bookingNotes").style.display = "none";
-  		document.getElementById("recurringForm").style.display = "initial";
-  	}else{ //hiding secondary form for recurring lessons
-		document.getElementById("bookingNotes").style.display = "initial";
-  		document.getElementById("recurringForm").style.display = "none";
-  	}
-  }
-
-  function submitForms(){
-  	document.getElementById("booking").submit();
-  	document.getElementById("recurringBooking").submit();
-  }
 
 </script>
 {% endblock javascript %}

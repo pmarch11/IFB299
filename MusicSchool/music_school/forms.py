@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import bookingModel, bookingModelRecurring, resumeModel, instrumentRequestModel, instrumentStockModel
+from .models import bookingModelInitial, bookingModelDetail, resumeModel, instrumentRequestModel, instrumentStockModel
 
 TimeCHOICES = (
 		('',''),
@@ -14,9 +14,9 @@ TimeCHOICES = (
 
 TeacherCHOICES = (
 	('',''),
-	(1, 'Clint Stevens'),
-	(2, 'Mika Jones'),
-	(3, 'Doug Kelly'),
+	('Clint Stevens', 'Clint Stevens'),
+	('Mika Jones', 'Mika Jones'),
+	('Doug Kelly', 'Doug Kelly'),
 	)
 
 DURATION_CHOICES = (
@@ -38,10 +38,10 @@ LESSON_DAY_CHOICES = (
 
 REPEATS_CHOICES = (
 	('',''),
-	(1, 'Weekly'),
-	(0.5, 'Fornightly'),
-	(2, 'Twice per Week'),
-	(3, 'Thrice per Week'),
+	('Weekly', 'Weekly'),
+	('Fornightly', 'Fornightly'),
+	('Twice per Week', 'Twice per Week'),
+	('Thrice per Week', 'Thrice per Week'),
 )
 
 INSTRUMENTS_CHOICES = (
@@ -82,23 +82,21 @@ class StudentRegistrationForm(forms.Form, UserCreationForm):
 		fields = ('username','first_name','last_name','email','password1','password2','file')
 
 
-class BookingForm(forms.ModelForm):
-	studentUsername = 'test'
+class bookingFormInitial(forms.ModelForm):
+	teacherUsername = forms.CharField(label = 'Select teacher', widget=forms.Select(choices=TeacherCHOICES))
+	recurringAmount = forms.CharField(label = "How often?", widget=forms.Select(choices=REPEATS_CHOICES))
+
+	class Meta:
+		model = bookingModelInitial
+		fields = ('teacherUsername', 'recurringAmount')
+		
+
+class BookingFormDetail(forms.ModelForm):
 	startingDate = forms.DateInput()
-	teacherID = forms.CharField(label = 'Select teacher', widget=forms.Select(choices=TeacherCHOICES))
 	startingTime = forms.CharField(label = 'Available starting times', widget=forms.Select(choices=TimeCHOICES))
 	lessonDuration = forms.CharField(label = 'Lesson length', widget=forms.Select(choices=DURATION_CHOICES))
 	instrumentFocus = forms.CharField(label = 'Which instrument?', widget=forms.Select(choices=INSTRUMENTS_CHOICES))
-
-	class Meta:
-		model = bookingModel
-		fields = ('teacherID', 'startingDate', 'startingTime', 'lessonDuration', 'instrumentFocus')
-		widgets = {
-			'startingDate': DateInput()
-		}
-
-class BookingFormRecurring(forms.ModelForm):
-	lessonRepeat = forms.CharField(label = "How often?", widget=forms.Select(choices=REPEATS_CHOICES), required=False)
+	
 	secondaryLessonDay = forms.CharField(label = "Secondary lesson day", widget=forms.Select(choices=LESSON_DAY_CHOICES), required=False)
 	secondaryLessonTime = forms.CharField(label = "Secondary lesson time", widget=forms.Select(choices=TimeCHOICES), required=False)
 	tertiaryLessonDay = forms.CharField(label = "Third lesson day", widget=forms.Select(choices=LESSON_DAY_CHOICES), required=False)
@@ -106,9 +104,11 @@ class BookingFormRecurring(forms.ModelForm):
 
 
 	class Meta:
-		model = bookingModelRecurring
-		fields = ('lessonRepeat', 'secondaryLessonDay', 'secondaryLessonTime', 'tertiaryLessonDay', 'tertiaryLessonTime')
-
+		model = bookingModelDetail
+		fields = ('startingDate', 'startingTime', 'lessonDuration', 'instrumentFocus', 'secondaryLessonDay', 'secondaryLessonTime', 'tertiaryLessonDay', 'tertiaryLessonTime')
+		widgets = {
+			'startingDate': DateInput()
+		}
 class resumeForm(forms.ModelForm):
 	notes = forms.CharField(widget=forms.Textarea(attrs={'width':"100%", 'cols' : "80", 'rows': "20",}))
 

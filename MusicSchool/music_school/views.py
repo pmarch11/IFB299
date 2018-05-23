@@ -9,8 +9,9 @@ from django.template import Context, loader
 from django.contrib.auth.models import User
 from django.db.models import F
 
-from .forms import StudentRegistrationForm, BookingForm, BookingFormRecurring, resumeForm, instrumentForm
-from .models import UserProfile, bookingModel, bookingModelRecurring, instrumentStockModel, TeacherProfile
+from .forms import StudentRegistrationForm, bookingFormInitial, BookingFormDetail, resumeForm, instrumentForm
+from .models import UserProfile, bookingModelInitial, bookingModelDetail, instrumentStockModel, TeacherProfile
+
 
 # Create your views here.
 class Index(View):
@@ -84,42 +85,36 @@ def student_registered(request):
 	return HttpResponse("You're now a registered student!")
 
 def confirm_booking(request):
-	template = 'bookingconfirmation.html'
-	context = {'booking': bookingModel.objects.order_by('bookingID')[0], 'bookingRecurring': bookingModelRecurring.objects.order_by('bookingID')[0]}
-	return render_to_response(template, context)
+	if request.method == 'POST':
+		form = BookingFormDetail(request.POST)
+		if form.is_valid():
+			bookingDetail = form.save()
+			bookingDetail.save()
+			return HttpResponse("Booked")
+	else:
+		form = BookingFormDetail()
+
+	return render(request, 'bookingconfirmation.html', { 'form': form, 'booking': bookingModelInitial.objects.latest('bookingID') })
+	#bookingModelInitial.objects.order_by('bookingID')[0]
 
 
 def create_a_booking(request):
 	if request.method == 'POST':
-		form = BookingForm(request.POST)
-		form2 = BookingFormRecurring(request.POST)
-		if form.is_valid() and form2.is_valid():
-			booking = form.save()
-			booking.studentUsername = request.user.username
-			booking.save()
+		form = bookingFormInitial(request.POST)
+		if form.is_valid():
+			bookingInitial = form.save()
+			bookingInitial.studentUsername = request.user.username
+			bookingInitial.save()
 
-			bookingRecurring = form2.save()
-			bookingRecurring.bookingID = bookingModel.objects.get(bookingID=booking.bookingID)
-			
-			bookingRecurring.save()
+			#bookingRecurring = form2.save()
+			#bookingRecurring.bookingID = bookingModel.objects.get(bookingID=booking.bookingID)
+			#bookingRecurring.save()
+
 			return redirect("confirm")
 	else:
-		form = BookingForm()
-		form2 = BookingFormRecurring()
+		form = bookingFormInitial()
 
-	return render(request, 'makeabooking.html', { 'form': form, 'form2': form2})
-
-#class view_booking(View):
-#	model = bookingModel #add bookingModelrecurring
-#	template_name = 'makeabooking.html'
-#
-#	def get(self,request):
-#		booking = request.booking
-#		return render(request,self.template_name, {'booking': booking,})
-
-#def view_booking(request):
-#	template = 'bookingconfirmation.html'
-#	context = {'booking': bookingModel.objects.get(instrumentType=) }
+	return render(request, 'makeabooking.html', { 'form': form })
 
 
 

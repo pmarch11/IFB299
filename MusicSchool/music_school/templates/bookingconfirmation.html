@@ -1,20 +1,194 @@
 {% extends 'default.html' %}
+{% load widget_tweaks %}
 {% block content %}
+<br>
 <div class="container">
-<h2>Thank you for submitting a booking!</h2>
-
-<p>Teacher: {{ booking.teacherID }}
-<p>Starting Date: {{ booking.startingDate }}</p>
-<p>Starting Time: {{ booking.startingTime }}</p>
-<p>Lesson Duration: {{ booking.lessonDuration }} Minutes</p>
-<p>Instrument of Focus: {{ booking.instrumentFocus }}</p>
-
-<p>Second lesson day: {{ bookingRecurring.secondaryLessonDay }}</p>
-<p>Second lesson time: {{ bookingRecurring.secondaryLessonTime }}</p>
-<p>Third lesson day: {{ bookingRecurring.tertiaryLessonDay }}</p>
-<p>Third lesson time: {{ bookingRecurring.tertiaryLessonTime }}</p>
-
+<div class="card-panel blue-grey darken-1 white-text">
+	<h3>Make a lesson booking here!</h3>
 </div>
 
+{% if user.is_authenticated %}
 
+
+	<div class="row">
+		<form class="booking" id="booking" method="post">
+		{% csrf_token %}
+		<div class="col s4">
+
+		<br><br>
+
+		    	<p>
+		    		{{ form.startingDate.label_tag }}<br>
+		    		{{ form.startingDate }}
+		    		{% if form.startingDate.help_text %}
+		    			<small style="color: grey">{{ form.startingDate.help_text }}</small>
+		    		{% endif %}
+		    		{% for error in form.startingDate.errors %}
+		    			<p style="color: red">{{ error }}</p>
+		    		{% endfor %}
+		    	
+		    	<br>
+		    	<br>
+		    	<br>
+
+		    	
+		    		{{ form.startingTime.label_tag }}<br>
+		    		{{ form.startingTime }}
+		    		{% if form.startingTime.help_text %}
+		    			<small style="color: grey">{{ form.startingTime.help_text }}</small>
+		    		{% endif %}
+		    		{% for error in form.startingTime.errors %}
+		    			<p style="color: red">{{ error }}</p>
+		    		{% endfor %}
+		    	
+		    	<br>
+		    	<br>
+		    	<br>
+
+		    	
+		    		{{ form.lessonDuration.label_tag }}<br>
+		    		{{ form.lessonDuration }}
+		    		{% if form.lessonDuration.help_text %}
+		    			<small style="color: grey">{{ form.lessonDuration.help_text }}</small>
+		    		{% endif %}
+		    		{% for error in form.lessonDuration.errors %}
+		    			<p style="color: red">{{ error }}</p>
+		    		{% endfor %}
+		    	
+		    	<br>
+		    	<br>
+		    	<br>
+
+		    	{{ form.instrumentFocus.label_tag }}<br>
+		    		{{ form.instrumentFocus }}
+		    		{% if form.instrumentFocus.help_text %}
+		    			<small style="color: grey">{{ form.instrumentFocus.help_text }}</small>
+		    		{% endif %}
+		    		{% for error in form.instrumentFocus.errors %}
+		    			<p style="color: red">{{ error }}</p>
+		    		{% endfor %}
+		    	
+		    	<br>
+		    	<br>
+		    	<br>
+
+		    	{% ifequal booking.recurringAmount "Twice per Week" %}
+
+		    		{{ form.secondaryLessonDay.label_tag }}<br>
+		    		{{ form.secondaryLessonDay }}
+		    		{% if form.secondaryLessonDay.help_text %}
+		    			<small style="color: grey">{{ form.secondaryLessonDay.help_text }}</small>
+		    		{% endif %}
+		    		{% for error in form.secondaryLessonDay.errors %}
+		    			<p style="color: red">{{ error }}</p>
+		    		{% endfor %}
+
+		    		<br>
+		    		<br>
+		    		<br>
+
+		    		{{ form.secondaryLessonTime.label_tag }}<br>
+		    		{{ form.secondaryLessonTime }}
+		    		{% if form.secondaryLessonTime.help_text %}
+		    			<small style="color: grey">{{ form.secondaryLessonTime.help_text }}</small>
+		    		{% endif %}
+		    		{% for error in form.secondaryLessonTime.errors %}
+		    			<p style="color: red">{{ error }}</p>
+		    		{% endfor %}
+
+
+		    	{% endifequal %}
+
+		    	{% ifequal booking.recurringAmount "Thrice per Week" %}
+		    	
+		    		{{ form.secondaryLessonDay.label_tag }}<br>
+		    		{{ form.secondaryLessonDay }}
+		    		{% if form.secondaryLessonDay.help_text %}
+		    			<small style="color: grey">{{ form.secondaryLessonDay.help_text }}</small>
+		    		{% endif %}
+		    		{% for error in form.secondaryLessonDay.errors %}
+		    			<p style="color: red">{{ error }}</p>
+		    		{% endfor %}
+
+		    		<br>
+		    		<br>
+		    		<br>
+
+		    		{{ form.secondaryLessonTime.label_tag }}<br>
+		    		{{ form.secondaryLessonTime }}
+		    		{% if form.secondaryLessonTime.help_text %}
+		    			<small style="color: grey">{{ form.secondaryLessonTime.help_text }}</small>
+		    		{% endif %}
+		    		{% for error in form.secondaryLessonTime.errors %}
+		    			<p style="color: red">{{ error }}</p>
+		    		{% endfor %}
+
+
+		    		<br><br><br>
+
+		    		{{ form.tertiaryLessonDay.label_tag }}<br>
+		    		{{ form.tertiaryLessonDay }}
+		    		{% if form.tertiaryLessonDay.help_text %}
+		    			<small style="color: grey">{{ form.tertiaryLessonDay.help_text }}</small>
+		    		{% endif %}
+		    		{% for error in form.tertiaryLessonDay.errors %}
+		    			<p style="color: red">{{ error }}</p>
+		    		{% endfor %}
+
+		    		<br>
+		    		<br>
+		    		<br>
+
+		    		{{ form.tertiaryLessonTime.label_tag }}<br>
+		    		{{ form.tertiaryLessonTime }}
+		    		{% if form.tertiaryLessonTime.help_text %}
+		    			<small style="color: grey">{{ form.tertiaryLessonTime.help_text }}</small>
+		    		{% endif %}
+		    		{% for error in form.tertiaryLessonTime.errors %}
+		    			<p style="color: red">{{ error }}</p>
+		    		{% endfor %}
+
+
+		    	{% endifequal %}
+
+		    	</p>
+
+
+		    <button id="register" class="btn waves-effect waves-light" type="submit">Submit<i class="material-icons right">send</i></button>
+			</div>
+
+			<div id="bookingNotes">
+		<br><br><br><br><br><br><br><br>
+			<div class="col s6 offset-s2">
+				<div class="card blue-grey darken-1">
+					<div class="card-content white-text">
+					<span class="card-title"><b> Please Note</b></span>
+						<p>Before making a booking, please take time to view the chosen teacher's profile, as it contains information about their availability, proficient instrument/s, and qualifications. </p>
+					</div>
+				</div><br>
+				<h4>Selected Teacher: {{ booking.teacherUsername }}</h4>
+			</div>
+		</div>
+
+		</form>
+	</div>
+</div>
+{% else %} <!--If user isnt authenticated, tell them to login first-->
+	<br><br>
+	<h4 style="color: red"> Please Login before making a booking </h4>
+	</div>
+
+
+
+{% endif %}
+
+{% block javascript %}
+<script>
+
+  var elem = document.querySelectorAll('select');
+  var instance = M.FormSelect.init(elem, {});
+
+</script>
+{% endblock javascript %}
+	
 {% endblock %}

@@ -97,26 +97,27 @@ class OldUserModel(models.Model):
 
 
 
-class bookingModel(models.Model):
+class bookingModelInitial(models.Model):
 
 	bookingID = models.AutoField(primary_key=True)
 	studentUsername = models.CharField(max_length=30)
-	teacherID = models.IntegerField() #needs to be changed to foreignkey
+	teacherUsername = models.CharField(max_length=30)
+	recurringAmount = models.CharField(max_length=30)
+	
+
+class bookingModelDetail(models.Model):
+
+	bookingDetailID = models.AutoField(primary_key=True)
 	startingDate = models.DateField()
 	startingTime = models.CharField(max_length = 10)
 	lessonDuration = models.IntegerField(default=30)
 	instrumentFocus = models.CharField(max_length = 30)
+	bookingID = models.ForeignKey(bookingModelInitial, on_delete=models.CASCADE, blank=True, null=True) #needs to be changed to foreignkey
 	
-
-class bookingModelRecurring(models.Model):
-	
-	recurringID = models.AutoField(primary_key=True)
-	bookingID = models.ForeignKey(bookingModel, on_delete=models.CASCADE, blank=True, null=True) #needs to be changed to foreignkey
-	lessonRepeat = models.CharField(null=True, max_length=20)
-	secondaryLessonDay = models.CharField(null=True, max_length=20)
-	secondaryLessonTime = models.CharField(null=True, max_length=10)
-	tertiaryLessonDay = models.CharField(null=True, max_length=20)
-	tertiaryLessonTime = models.CharField(null=True, max_length=10)
+	secondaryLessonDay = models.CharField(null=True, max_length=20, blank=True)
+	secondaryLessonTime = models.CharField(null=True, max_length=10, blank=True)
+	tertiaryLessonDay = models.CharField(null=True, max_length=20, blank=True)
+	tertiaryLessonTime = models.CharField(null=True, max_length=10, blank=True)
 
 class resumeModel(models.Model):
 	notes = models.CharField(max_length=255, blank=True)
