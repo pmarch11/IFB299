@@ -8,6 +8,7 @@ from django.views.generic.edit import UpdateView
 from django.template import Context, loader
 from django.contrib.auth.models import User
 from django.db.models import F
+import datetime
 
 from .forms import StudentRegistrationForm, bookingFormInitial, BookingFormDetail, resumeForm, instrumentForm
 from .models import UserProfile, bookingModelInitial, bookingModelDetail, instrumentStockModel, TeacherProfile
@@ -89,6 +90,8 @@ def confirm_booking(request):
 		form = BookingFormDetail(request.POST)
 		if form.is_valid():
 			bookingDetail = form.save()
+			BOOKingID = bookingModelInitial.objects.latest('bookingID')
+			bookingDetail.bookingID = BOOKingID
 			bookingDetail.save()
 			return HttpResponse("Booked")
 	else:
@@ -105,10 +108,6 @@ def create_a_booking(request):
 			bookingInitial = form.save()
 			bookingInitial.studentUsername = request.user.username
 			bookingInitial.save()
-
-			#bookingRecurring = form2.save()
-			#bookingRecurring.bookingID = bookingModel.objects.get(bookingID=booking.bookingID)
-			#bookingRecurring.save()
 
 			return redirect("confirm")
 	else:
@@ -145,6 +144,8 @@ def instrument_request(request):
 				return HttpResponse("Thank you for your rental, come to Mika's music school in person to collect your instrument")
 			else:
 				return HttpResponse("Instrument is currently out of stock")
+
+			
 			
 	else:
 		form = instrumentForm()

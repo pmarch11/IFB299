@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import bookingModelInitial, bookingModelDetail, resumeModel, instrumentRequestModel, instrumentStockModel
+import datetime
 
 TimeCHOICES = (
 		('',''),
@@ -102,6 +103,13 @@ class BookingFormDetail(forms.ModelForm):
 	tertiaryLessonDay = forms.CharField(label = "Third lesson day", widget=forms.Select(choices=LESSON_DAY_CHOICES), required=False)
 	tertiaryLessonTime = forms.CharField(label = "Third lesson time", widget=forms.Select(choices=TimeCHOICES), required=False)
 
+	# function to check return date in the future
+	def clean_startingDate(self):
+		date = self.cleaned_data.get("startingDate")
+		if date < datetime.date.today():
+			raise forms.ValidationError("The starting date must be in the future!")
+		return date
+
 
 	class Meta:
 		model = bookingModelDetail
@@ -124,6 +132,15 @@ class instrumentForm(forms.ModelForm):
 		widget=forms.Select(attrs={'class': 'instrumentType'}),
 	)
 	return_date = forms.DateInput()
+
+
+	# function to check return date in the future
+	def clean_return_date(self):
+		date = self.cleaned_data.get("return_date")
+		if date < datetime.date.today():
+			raise forms.ValidationError("The date of return must be in the future!")
+		return date
+
 
 	class Meta:
 		model = instrumentRequestModel
