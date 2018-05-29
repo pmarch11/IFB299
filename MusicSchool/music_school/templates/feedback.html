@@ -1,0 +1,79 @@
+{% extends 'default.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<br>
+<div class="container">
+<div class="card-panel blue-grey darken-1 white-text">
+	<h3>Leave feedback about teachers here!</h3>
+</div>
+
+{% if user.is_authenticated %}
+
+
+	<div class="row">
+		<form class="feedback" id="feedback" method="post">
+		{% csrf_token %}
+		<div class="col s4">
+
+		<br><br>
+
+			{% for field in form %}
+		    	<p>
+		    		{{ field.label_tag }}<br>
+		    		{{ field }}
+		    		{% if field.help_text %}
+		    			<small style="color: grey">{{ field.help_text }}</small>
+		    		{% endif %}
+		    		{% for error in field.errors %}
+		    			<p style="color: red">{{ error }}</p>
+		    		{% endfor %}
+		    	</p>
+		    	<br>
+		    {% endfor %}
+
+		    {% if messages %}
+			<ul class="messages">
+    			{% for message in messages %}
+    			<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    			{% endfor %}
+			</ul>
+			{% endif %}
+
+
+		    <button id="register" class="btn waves-effect waves-light" type="submit">Submit<i class="material-icons right">send</i></button>
+			</div>
+
+			<div id="bookingNotes">
+		<br><br><br><br><br><br><br><br>
+			<div class="col s6 offset-s2">
+				<div class="card blue-grey darken-1">
+					<div class="card-content white-text">
+					<span class="card-title"><b> Please Note</b></span>
+						<p>Please leave feedback about teachers who have taught you here, all feedback will be passed on anonymously to the teacher
+						<br><br>
+						a maximum of 300 characters is enforced for reviews</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		</form>
+	</div>
+</div>
+{% else %} <!--If user isnt authenticated, tell them to login first-->
+	<br><br>
+	<h4 style="color: red"> Please Login before leaving feedback </h4>
+	</div>
+
+{% endif %}
+
+{% block javascript %}
+<script>
+
+  var elem = document.querySelectorAll('select');
+  var instance = M.FormSelect.init(elem, {});
+
+</script>
+{% endblock javascript %}
+
+{% endblock %}

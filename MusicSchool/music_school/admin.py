@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import UserProfile, bookingModelInitial, bookingModelDetail, instrumentStockModel, instrumentRequestModel,TeacherProfile, resumeModel
+from .models import UserProfile, bookingModelInitial, bookingModelDetail, instrumentStockModel, instrumentRequestModel,TeacherProfile, resumeModel, feedbackModel
 
 
 # Register your models here.
@@ -15,6 +15,7 @@ admin.site.register(bookingModelDetail)
 admin.site.register(instrumentStockModel)
 admin.site.register(instrumentRequestModel)
 admin.site.register(resumeModel)
+admin.site.register(feedbackModel)
 
 class BookingAdmin(admin.ModelAdmin):
 	readonly_fields = ('bookingID')

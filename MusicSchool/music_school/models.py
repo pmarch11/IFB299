@@ -139,3 +139,9 @@ class instrumentRequestModel(models.Model):
 	instrumentType = models.ForeignKey(instrumentStockModel, on_delete=models.CASCADE)
 	studentUsername = models.CharField(max_length=30)
 	return_date = models.DateField()
+
+class feedbackModel(models.Model):
+	feedbackID = models.AutoField(primary_key=True)
+	studentUsername = models.CharField(max_length=30)
+	teacherUsername = models.CharField(max_length=30)
+	feedbackDescription = models.CharField(max_length=300)
