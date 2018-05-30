@@ -16,4 +16,5 @@ urlpatterns = [
 	url(r'^apply/$', views.form_upload, name='apply'),
 	url(r'^instrument/$', views.instrument_request, name='instrument'),
 	url(r'^teacherprofile/(?P<teacher>[-\w]+)/$', views.ViewTProfile.as_view(), name="teacherprofile"),
+	url(r'^feedback/$', views.leaveFeedback, name='feedback'),
 ]

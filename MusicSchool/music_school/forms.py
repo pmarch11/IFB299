@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import bookingModelInitial, bookingModelDetail, resumeModel, instrumentRequestModel, instrumentStockModel
+from .models import bookingModelInitial, bookingModelDetail, resumeModel, instrumentRequestModel, instrumentStockModel, feedbackModel
 import datetime
 
 TimeCHOICES = (
@@ -148,3 +148,12 @@ class instrumentForm(forms.ModelForm):
 		widgets = {
 			'return_date': DateInput()
 		}
+
+class feedbackForm(forms.ModelForm):
+	teacherUsername = forms.CharField(label="Select teacher to give feedback", widget=forms.Select(choices=TeacherCHOICES))
+	feedbackDescription = forms.CharField(label="Leave feedback here", widget=forms.Textarea(attrs={'width':"100%", 'cols' : "80", 'rows': "20",}))
+
+
+	class Meta:
+		model = feedbackModel
+		fields = ( 'teacherUsername', 'feedbackDescription')

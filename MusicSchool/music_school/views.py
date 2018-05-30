@@ -9,9 +9,11 @@ from django.template import Context, loader
 from django.contrib.auth.models import User
 from django.db.models import F
 import datetime
+from django import forms
+from django.contrib import messages
 
-from .forms import StudentRegistrationForm, bookingFormInitial, BookingFormDetail, resumeForm, instrumentForm
-from .models import UserProfile, bookingModelInitial, bookingModelDetail, instrumentStockModel, TeacherProfile
+from .forms import StudentRegistrationForm, bookingFormInitial, BookingFormDetail, resumeForm, instrumentForm, feedbackForm
+from .models import UserProfile, bookingModelInitial, bookingModelDetail, instrumentStockModel, TeacherProfile, feedbackModel
 
 
 # Create your views here.
@@ -150,3 +152,24 @@ def instrument_request(request):
 	else:
 		form = instrumentForm()
 	return render(request, 'instrumentHire.html', { 'form': form})
+
+def leaveFeedback(request):
+	if request.method == 'POST':
+		form = feedbackForm(request.POST)
+		if form.is_valid():
+			if bookingModelInitial.objects.filter(studentUsername=request.user.username, teacherUsername=form.cleaned_data.get('teacherUsername')).exists():
+				if feedbackModel.objects.filter(studentUsername=request.user.username, teacherUsername=form.cleaned_data.get('teacherUsername')).exists():
+					messages.error(request, "You have already left a review for this teacher")
+				else:
+					feedback = form.save()
+					feedback.studentUsername = request.user.username
+					feedback.save()
+					return HttpResponse("Thank you for your feedback")
+			else:
+				messages.error(request, "You have never taken a class with this teacher")
+			
+			
+			
+	else:
+		form = feedbackForm()
+	return render(request, 'feedback.html', { 'form': form})
