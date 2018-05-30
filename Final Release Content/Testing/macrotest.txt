@@ -1,0 +1,26 @@
+[status]
+Playing macro test
+[info]
+Executing:  | open | http://127.0.0.1:8000/music_school |  | 
+[info]
+Executing:  | click | link=login |  | 
+[info]
+Executing:  | type | id=id_username | test | 
+[info]
+Executing:  | type | id=id_password | password1234 | 
+[info]
+Executing:  | click | id=register |  | 
+[info]
+Executing:  | click | link=profile |  | 
+[info]
+Executing:  | assertText | css=body > main > div > h2 | Welcome, Test Test! | 
+[info]
+Executing:  | click | link=book a lesson |  | 
+[info]
+Executing:  | assertText | css=body > main > div > div.card-panel.blue-grey.darken-1.white-text > h3 | Make a lesson booking here! | 
+[info]
+Executing:  | click | css=input.select-dropdown.dropdown-trigger | Clint Stevens | 
+[info]
+Executing:  | type | css=input.select-dropdown.dropdown-trigger | Clint Stevens | 
+[info]
+Macro completed (Runtime 13.05s)
