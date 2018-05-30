@@ -39,8 +39,6 @@ class ViewTProfile(View):
 
 	def get(self,request,teacher):
 		teacherUser = User.objects.filter(username = teacher)
-		for e in teacherUser:
-			print(e.username)
 		searchUser = get_object_or_404(User, username = teacher)
 		teacherInfo = TeacherProfile.objects.filter(user = searchUser)
 		return render(request,self.template_name, {'teacherUser': teacherUser, 'teacherInfo': teacherInfo})
